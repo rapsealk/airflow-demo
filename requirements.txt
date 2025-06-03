@@ -1,1 +1,1 @@
-apache-airflow==2.6.3 --constraint https://raw.githubusercontent.com/apache/airflow/constraints-2.6.3/constraints-3.10.txt
+apache-airflow==3.0.1  # https://github.com/apache/airflow

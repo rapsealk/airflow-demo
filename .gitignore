@@ -1,1 +1,7 @@
+.DS_Store
+
 venv
+logs
+
+airflow.db*
+passwords.json
