@@ -8,3 +8,4 @@ airflow.db*
 passwords.json
 
 .env
+variables.json

@@ -4,8 +4,8 @@ from pathlib import Path
 
 from airflow.providers.docker.operators.docker import DockerOperator
 from airflow.providers.standard.operators.python import PythonOperator, PythonVirtualenvOperator
-from airflow.sdk import DAG
-from docker.types import Mount
+from airflow.sdk import DAG, Variable
+from docker.types import DeviceRequest, Mount
 
 with DAG(
     dag_id="torchtune",
@@ -28,13 +28,14 @@ with DAG(
     )
 
     def _print_torchtune_version() -> None:
-        import torchtune
-        print(f"Torchtune version: {torchtune.__version__}")
+        # import torchtune
+        # print(f"Torchtune version: {torchtune.__version__}")
+        pass
 
     t2 = PythonVirtualenvOperator(
         task_id="print_torchtune_version",
         python_callable=_print_torchtune_version,
-        requirements=["torch", "torchao", "torchtune"],
+        # requirements=["torch", "torchao", "torchtune"],
         system_site_packages=False,
     )
 
@@ -45,7 +46,18 @@ with DAG(
         cpus=1.0,
         shm_size=None,
         mem_limit="4g",
-        env_file=str(Path(__file__).absolute().parent / ".env"),
+        environment={
+            "HF_TOKEN": Variable.get("HF_TOKEN"),
+        },
+        # https://docs.docker.com/compose/how-tos/gpu-support/#example-of-a-compose-file-for-running-a-service-with-access-to-1-gpu-device
+        device_requests=[
+            DeviceRequest(
+                driver="nvidia",
+                count=-1,
+                capabilities=[["gpu"]],
+            ),
+        ],
+        # env_file=str(Path(__file__).absolute().parent / ".env"),
         network_mode="bridge",
         privileged=False,
         mounts=[

@@ -1,0 +1,3 @@
+package "libbz2-dev"  # _bz1
+package "libffi-dev"  # _cytypes
+package "libsqlite3-dev"  # sqlite3
