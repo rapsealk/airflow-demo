@@ -8,3 +8,5 @@ airflow.db*
 passwords.json
 
 .env
+datasets
+*.ckpt
