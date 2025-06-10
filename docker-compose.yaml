@@ -7,5 +7,6 @@ services:
       AIRFLOW_HOME: /opt/airflow
     volumes:
       - .:/opt/airflow
-      - ./dags/torchtune/v1/.env:/opt/airflow/dags/torchtune/v1/.env:ro
-    command: airflow standalone
+      - ./dags/mnist/v1/.env:/opt/airflow/dags/mnist/v1/.env:ro
+    # command: airflow standalone
+    entrypoint: /opt/airflow/compose/entrypoint.sh

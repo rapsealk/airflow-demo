@@ -5,7 +5,7 @@ from airflow.providers.standard.operators.python import PythonOperator, PythonVi
 from airflow.sdk import DAG
 
 with DAG(
-    dag_id="torchtune",
+    dag_id="mnist",
     default_args={
         "depends_on_past": False,
         "retries": 1,
@@ -38,7 +38,7 @@ with DAG(
         if not dataset_path.exists():
             dataset_path.mkdir(parents=True, exist_ok=True)
 
-        hf_token = "hf_XXXXXXXXXXX"  # TODO:
+        hf_token = "hf_XXXXXXXX"  # TODO:
 
         dataset = datasets.load_dataset(
             "ylecun/mnist",
@@ -62,11 +62,13 @@ with DAG(
         from pathlib import Path
 
         import torch
-        import torch.nn as nn
+        # import torch.nn as nn
         import torch.nn.functional as F
         import torch.optim as optim
         from torchvision import datasets, transforms
         from torch.optim.lr_scheduler import StepLR
+
+        from mnist.v1.models import Net
 
         AIRFLOW_HOME = os.getenv("AIRFLOW_HOME", "/opt/airflow")
         dataset_path = Path(AIRFLOW_HOME) / "datasets" / "mnist"
@@ -82,31 +84,31 @@ with DAG(
         log_interval = 10
         save_model = True
 
-        class Net(nn.Module):
-            def __init__(self):
-                super(Net, self).__init__()
-                self.conv1 = nn.Conv2d(1, 32, 3, 1)
-                self.conv2 = nn.Conv2d(32, 64, 3, 1)
-                self.dropout1 = nn.Dropout(0.25)
-                self.dropout2 = nn.Dropout(0.5)
-                self.fc1 = nn.Linear(9216, 128)
-                self.fc2 = nn.Linear(128, 10)
+        # class Net(nn.Module):
+        #     def __init__(self):
+        #         super(Net, self).__init__()
+        #         self.conv1 = nn.Conv2d(1, 32, 3, 1)
+        #         self.conv2 = nn.Conv2d(32, 64, 3, 1)
+        #         self.dropout1 = nn.Dropout(0.25)
+        #         self.dropout2 = nn.Dropout(0.5)
+        #         self.fc1 = nn.Linear(9216, 128)
+        #         self.fc2 = nn.Linear(128, 10)
 
-            def forward(self, x):
-                x = self.conv1(x)
-                x = F.relu(x)
-                x = self.conv2(x)
-                x = F.relu(x)
-                x = F.max_pool2d(x, 2)
-                x = self.dropout1(x)
-                x = torch.flatten(x, 1)
-                x = self.fc1(x)
-                x = F.relu(x)
-                x = self.dropout2(x)
-                x = self.fc2(x)
-                output = F.log_softmax(x, dim=1)
-                return output
-            
+        #     def forward(self, x):
+        #         x = self.conv1(x)
+        #         x = F.relu(x)
+        #         x = self.conv2(x)
+        #         x = F.relu(x)
+        #         x = F.max_pool2d(x, 2)
+        #         x = self.dropout1(x)
+        #         x = torch.flatten(x, 1)
+        #         x = self.fc1(x)
+        #         x = F.relu(x)
+        #         x = self.dropout2(x)
+        #         x = self.fc2(x)
+        #         output = F.log_softmax(x, dim=1)
+        #         return output
+
         def train(args, model, device, train_loader, optimizer, epoch):
             model.train()
             for batch_idx, (data, target) in enumerate(train_loader):
@@ -162,7 +164,7 @@ with DAG(
                 train_kwargs.update(accel_kwargs)
                 test_kwargs.update(accel_kwargs)
 
-            transform=transforms.Compose([
+            transform = transforms.Compose([
                 transforms.ToTensor(),
                 transforms.Normalize((0.1307,), (0.3081,))
             ])
