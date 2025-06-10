@@ -8,4 +8,9 @@ airflow.db*
 passwords.json
 
 .env
+<<<<<<< Updated upstream
 variables.json
+=======
+datasets
+*.ckpt
+>>>>>>> Stashed changes

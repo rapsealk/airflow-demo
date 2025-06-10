@@ -1,0 +1,12 @@
+services:
+  airflow:
+    image: apache/airflow:3.0.2rc2-python3.12
+    ports:
+      - 8080:8080
+    environment:
+      AIRFLOW_HOME: /opt/airflow
+    volumes:
+      - .:/opt/airflow
+      - ./dags/mnist/v1/.env:/opt/airflow/dags/mnist/v1/.env:ro
+    # command: airflow standalone
+    entrypoint: /opt/airflow/compose/entrypoint.sh
