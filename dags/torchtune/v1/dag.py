@@ -2,9 +2,7 @@ import sys
 from datetime import datetime, timedelta, timezone
 
 from airflow.providers.standard.operators.python import PythonOperator, PythonVirtualenvOperator
-from airflow.sdk import DAG, Variable
-
-HF_TOKEN = Variable.get("HF_TOKEN")
+from airflow.sdk import DAG
 
 with DAG(
     dag_id="torchtune",
@@ -14,6 +12,9 @@ with DAG(
         "retry_delay": timedelta(minutes=5),
     },
     description="PyTorch fine-tuning example DAG",
+    # params={
+    #     "HF_TOKEN": Param("hf_XXXXXX", type=str),  # TODO: Set your Hugging Face token
+    # },
     start_date=datetime.now(timezone.utc) + timedelta(seconds=10),
     catchup=False,
     tags=["example"],
