@@ -1,0 +1,16 @@
+models:
+  - name: mnist-gradio-demo
+    model_path: /models
+    service:
+      pre_start_actions:
+        - action: run_command
+          args:
+            command: ["pip", "install", "-r", "/models/requirements.txt"]
+      start_command:
+        - fastapi
+        - run
+        - /models/main.py
+      port: 8000
+      health_check:
+        path: /health
+        max_retries: 5
