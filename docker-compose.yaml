@@ -1,6 +1,6 @@
 services:
   airflow:
-    image: apache/airflow:3.0.2rc2-python3.12
+    image: apache/airflow:3.0.2-python3.12
     ports:
       - 8080:8080
     environment:

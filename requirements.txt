@@ -1,4 +1,4 @@
-apache-airflow==3.0.1  # https://github.com/apache/airflow
+apache-airflow==3.0.2  # https://github.com/apache/airflow
 # apache-airflow @ git+https://github.com/rapsealk/airflow@f5e081335ecdd7b976299c931f800689c424de33
 apache-airflow-providers-docker[common.compat]==4.4.0  # https://github.com/apache/airflow/tree/main/providers/docker
 # apache-airflow-providers-docker[common.compat] @ git+https://github.com/rapsealk/airflow@f5e081335ecdd7b976299c931f800689c424de33#egg=apache-airflow-providers-docker&subdirectory=providers/docker
