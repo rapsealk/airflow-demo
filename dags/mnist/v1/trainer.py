@@ -1,6 +1,3 @@
-from collections.abc import Mapping
-from typing import Any
-
 import torch
 import torch.nn.functional as F
 import torch.optim as optim
@@ -12,7 +9,7 @@ class Trainer:
 
     def train(
         self,
-        args: Mapping[str, Any],
+        args,
         device: torch.device,
         train_loader: torch.utils.data.DataLoader,
         optimizer: optim.Optimizer,
@@ -28,8 +25,12 @@ class Trainer:
             optimizer.step()
             if batch_idx % args.log_interval == 0:
                 print("Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}".format(
-                    epoch, batch_idx * len(data), len(train_loader.dataset),
-                    100. * batch_idx / len(train_loader), loss.item()))
+                    epoch,
+                    batch_idx * len(data),
+                    len(train_loader.dataset),
+                    100. * batch_idx / len(train_loader),
+                    loss.item(),
+                ))
                 if args.dry_run:
                     break
 
@@ -52,5 +53,8 @@ class Trainer:
         test_loss /= len(test_loader.dataset)
 
         print("\nTest set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n".format(
-            test_loss, correct, len(test_loader.dataset),
-            100. * correct / len(test_loader.dataset)))
+            test_loss,
+            correct,
+            len(test_loader.dataset),
+            100. * correct / len(test_loader.dataset),
+        ))
