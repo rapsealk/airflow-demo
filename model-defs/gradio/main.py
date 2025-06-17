@@ -21,6 +21,7 @@ transform = transforms.Compose([
 
 app = FastAPI()
 
+
 @app.get("/health", status_code=HTTPStatus.OK)
 async def health_check() -> Response:
     return JSONResponse({"healthy": True})

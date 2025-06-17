@@ -13,10 +13,9 @@ with DAG(
         "retries": 1,
         "retry_delay": timedelta(minutes=5),
     },
-    description="PyTorch fine-tuning example DAG",
-    # https://airflow.apache.org/docs/apache-airflow/2.6.0/core-concepts/params.html
+    description="PyTorch MNIST classification example DAG",
     params={
-        "hf_token": HF_TOKEN,  # Param()
+        "hf_token": HF_TOKEN,
     },
     start_date=datetime.now(timezone.utc) + timedelta(seconds=10),
     catchup=False,
